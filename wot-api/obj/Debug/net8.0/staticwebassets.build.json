@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "Ea/iIX1HswVj6F/U7C4GP2ZibqbUU62NIrq2X+QqfCQ=",
+  "Source": "wot-api",
+  "BasePath": "_content/wot-api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
