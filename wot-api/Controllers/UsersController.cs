@@ -3,13 +3,13 @@
 namespace wot_api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("users")]
     public class UsersController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("test")]
         public ActionResult Index()
         {
-            return Ok();
+            return Ok("Request is Successfull!");
         }
        
     }

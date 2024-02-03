@@ -9,6 +9,11 @@ namespace wot_api.Repositories
 
         public UserRepository() { }
 
+        public IEnumerable<Users> GetAll()
+        {
+            yield return new Users();
+        }
+
         public Users GetById(int id) 
         {
             var user = new Users();
