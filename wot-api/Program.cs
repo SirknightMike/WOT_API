@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using wot_api.Data;
+using wot_api.Repositories;
+using wot_api.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,8 @@ builder.Services.AddDbContext<DataContext>(opt =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,10 +29,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(x => x
-           .AllowAnyOrigin()
+app.UseCors(builder =>
+{
+    builder.WithOrigins("http://localhost:4200")
            .AllowAnyMethod()
-           .AllowAnyHeader());
+           .AllowAnyHeader();
+});
 
 app.UseHttpsRedirection();
 
