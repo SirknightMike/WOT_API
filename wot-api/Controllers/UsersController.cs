@@ -25,7 +25,7 @@ namespace wot_api.Controllers
                     return BadRequest("Invalid user data");
                 }
                 _userRepository.Add(user);
-                return Ok("User registered succesfully");
+                return Ok(user);
             }
             catch (Exception ex)
             {
