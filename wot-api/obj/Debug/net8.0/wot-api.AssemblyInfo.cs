@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("wot-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b06320bf46ba85961747899789cb1bbc6fc24b7b")]
 [assembly: System.Reflection.AssemblyProductAttribute("wot-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("wot-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
