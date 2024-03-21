@@ -43,6 +43,36 @@ namespace wot_api.Controllers
             }
         }
 
+        [HttpPost("login")]
+        public IActionResult LoginUser([FromBody] Users user)
+        {
+            try
+            {
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var users = _userRepository.GetAll();
+
+                foreach (var u in users)
+                {
+                    if (user.Email == u.Email && user.Password == u.Password)
+                    {
+                        return Ok();
+                    }
+
+                }
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+        
+
         [HttpGet("test")]
         public ActionResult Index()
         {
@@ -76,12 +106,12 @@ namespace wot_api.Controllers
             if (trimmedEmail.EndsWith("."))
             {
                 errorMessage = "Email is invalid";
-                return false; // suggested by @TK-421
+                return false;
             }
             try
             {
                 var addr = new System.Net.Mail.MailAddress(email);
-                // Here could be problem in the future 
+
                 errorMessage = null;
                 return addr.Address == trimmedEmail;
             }
@@ -92,8 +122,8 @@ namespace wot_api.Controllers
             }
         }
 
-        
 
-       
+
+
     }
 }
