@@ -71,13 +71,6 @@ namespace wot_api.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        
-
-        [HttpGet("test")]
-        public ActionResult Index()
-        {
-            return Ok("Request is Successfull!");
-        }
 
         private Boolean IsPasswordValid(string password, out string errorMessage)
         {
