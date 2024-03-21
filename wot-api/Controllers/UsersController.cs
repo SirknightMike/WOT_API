@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
 using wot_api.Entities;
 using wot_api.Repositories.Interfaces;
 
@@ -25,11 +26,12 @@ namespace wot_api.Controllers
                     return BadRequest("Invalid user data");
                 }
                 
-                bool isValid = this.IsPasswordValid(user.Password, out string errroMessage);
+                bool isValid = this.IsPasswordValid(user.Password, out string errorMessage);
+                bool isEmailValid = this.IsEmailValid(user.Email, out errorMessage);
 
-                if (!isValid)
+                if (!isValid || !isEmailValid)
                 {
-                    return BadRequest(errroMessage);
+                    return BadRequest(errorMessage);
                 }
 
                 _userRepository.Add(user);
@@ -65,6 +67,29 @@ namespace wot_api.Controllers
             }
 
             return true;
+        }
+
+        private Boolean IsEmailValid(string email, out string errorMessage)
+        {
+            var trimmedEmail = email.Trim();
+
+            if (trimmedEmail.EndsWith("."))
+            {
+                errorMessage = "Email is invalid";
+                return false; // suggested by @TK-421
+            }
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                // Here could be problem in the future 
+                errorMessage = null;
+                return addr.Address == trimmedEmail;
+            }
+            catch
+            {
+                errorMessage = "Email is not valid";
+                return false;
+            }
         }
 
         
