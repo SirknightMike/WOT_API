@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using wot_api.Data;
+﻿using wot_api.Data;
 using wot_api.Entities;
 using wot_api.Repositories.Interfaces;
 
@@ -14,32 +13,32 @@ namespace wot_api.Repositories
             _context = context;
         }
 
-        public async IEnumerable<Users> GetAll()
+        public IEnumerable<Users> GetAll()
         {
-            return await _context.Users.ToListAsync();
+            return _context.Users.ToList();
         }
 
-        public async Users GetById(int id) 
+        public Users GetById(int id) 
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return _context.Users.FirstOrDefault(u => u.Id == id);
         }
-        public async void Add(Users user) 
+        public void Add(Users user) 
         {
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            _context.Users.Add(user);
+            _context.SaveChanges();
         }
-        public async void Update(Users user) 
+        public void Update(Users user) 
         { 
             _context.Users.Update(user);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
-        public async void Delete(int id) 
+        public void Delete(int id) 
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = _context.Users.Find(id);
             if (user != null)
             {
                 _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
         }
     }
