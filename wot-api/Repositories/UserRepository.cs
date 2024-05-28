@@ -42,5 +42,11 @@ namespace wot_api.Repositories
                 _context.SaveChangesAsync();
             }
         }
+
+        public Users? GetUserByEmail(string email)
+        {
+
+            return _context.Users.FirstOrDefault(u => u.Email == email);
+        }
     }
 }
