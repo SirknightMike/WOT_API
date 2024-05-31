@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using System.Text;
 using wot_api.DTO;
 using wot_api.Entities;
-using wot_api.Repositories.Interfaces;
 
 
 namespace wot_api.Classes

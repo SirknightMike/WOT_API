@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using wot_api.Classes;
+using wot_api.Data;
 using wot_api.Entities;
-using wot_api.Repositories.Interfaces;
 
 namespace wot_api.Controllers
 {
@@ -10,11 +10,11 @@ namespace wot_api.Controllers
     [Route("users")]
     public class UsersController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly DataContext _context;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(DataContext context)
         {
-            _userRepository = userRepository;
+            _context = context;
         }
 
         [HttpPost("register")]
@@ -51,7 +51,9 @@ namespace wot_api.Controllers
                 user.Password = passwordEncryption.HashPassword;
                 user.Salt = passwordEncryption.Salt;
 
-                _userRepository.Add(user);
+                _context.Users.Add(user);
+                _context.SaveChanges();
+
                 return Ok(user);
             }
             catch (Exception ex)
@@ -70,7 +72,7 @@ namespace wot_api.Controllers
                     return NotFound();
                 }
 
-                var users = _userRepository.GetUserByEmail(user.Email);
+                var users = _context.Users.FirstOrDefault(u => u.Email == user.Email);
 
                 if (users != null)
                 {
@@ -111,7 +113,6 @@ namespace wot_api.Controllers
             return true;
         }
 
-
         private Boolean IsEmailValid(string email, out string errorEmailMessage)
         {
             var trimmedEmail = email.Trim();
@@ -137,7 +138,7 @@ namespace wot_api.Controllers
 
         private bool IsDupplicateUser(Users user, out string errorDupplicateUser)
         {
-            var userEmail = this._userRepository.GetUserByEmail(user.Email);
+            var userEmail = _context.Users.FirstOrDefault(u => u.Email == user.Email);
 
             if (userEmail != null)
             {
