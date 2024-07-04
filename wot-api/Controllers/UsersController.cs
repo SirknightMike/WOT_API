@@ -11,10 +11,12 @@ namespace wot_api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly AuthService _authService;
 
-        public UsersController(DataContext context)
+        public UsersController(DataContext context, AuthService authService)
         {
             _context = context;
+            _authService = authService;
         }
 
         [HttpPost("register")]
@@ -46,6 +48,8 @@ namespace wot_api.Controllers
                     return BadRequest(errorDupplicateUser);
                 }
 
+                
+
                 var passwordEncryption = new DataProtection().HashPassword(user);
 
                 user.Password = passwordEncryption.HashPassword;
@@ -72,15 +76,16 @@ namespace wot_api.Controllers
                     return NotFound();
                 }
 
-                var users = _context.Users.FirstOrDefault(u => u.Email == user.Email);
+                var existingUsers = _context.Users.FirstOrDefault(u => u.Email == user.Email);
 
-                if (users != null)
+                if (existingUsers != null)
                 {
-                    var convertPass = new DataProtection().VerifyHashPassword(user.Password, users.Salt);
+                    var convertPass = new DataProtection().VerifyHashPassword(user.Password, existingUsers.Salt);
 
-                    if (convertPass == users.Password)
+                    if (convertPass == existingUsers.Password)
                     {
-                        return Ok();
+                        var token = _authService.GenerateJwtToken(existingUsers.Email);
+                        return Ok( new { token });
                     }
                 }
 
