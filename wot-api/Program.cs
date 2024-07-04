@@ -1,7 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using wot_api.Classes;
 using wot_api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var secretKey = builder.Configuration["Jwt:SecretKey"];
+var issuer = builder.Configuration["Jwt:Issuer"];
+var audience = builder.Configuration["Jwt:Audience"];
+
+builder.Services.AddSingleton(new AuthService(secretKey, issuer, audience));
+
 
 // Add services to the container.
 
