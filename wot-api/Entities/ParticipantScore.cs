@@ -13,7 +13,7 @@ namespace wot_api.Entities
         [ForeignKey("Participant")]
         public int ParticipantId { get; set; }
         public int Score { get; set; }
-        public Match Match { get; set; }
-        public Participant Participant { get; set; }
+        public virtual Match Match { get; set; }
+        public virtual Participant Participant { get; set; }
     }
 }

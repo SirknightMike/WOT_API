@@ -14,40 +14,50 @@ namespace wot_api.Data
         public DbSet<Match> Matches { get; set; }
         public DbSet<Participant> Participants { get; set; }
         public DbSet<ParticipantScore> ParticipantsScore { get; set; }
+        public DbSet<Roles> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Users
             modelBuilder.Entity<Users>()
                 .HasIndex(p => p.Email)
                 .IsUnique(true);
 
+            // Competition and Participants
             modelBuilder.Entity<Competition>()
                  .HasMany(c => c.Participants)
-                 .WithOne()
+                 .WithOne(p => p.Competition) // Added navigation property for Participant
                  .OnDelete(DeleteBehavior.Cascade);
 
-            // Configure one-to-many relationship between Competition and Match
+            // Competition and Matches
             modelBuilder.Entity<Competition>()
                 .HasMany(c => c.Matches)
                 .WithOne(m => m.Competition)
                 .HasForeignKey(m => m.CompetitionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Configure one-to-many relationship between Match and ParticipantScore
+            // Match and ParticipantScores
             modelBuilder.Entity<Match>()
                 .HasMany(m => m.ParticipantScores)
                 .WithOne(ps => ps.Match)
                 .HasForeignKey(ps => ps.MatchId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Configure one-to-many relationship between Participant and ParticipantScore with NoAction on delete
+            // Participant and ParticipantScore
             modelBuilder.Entity<ParticipantScore>()
                 .HasOne(ps => ps.Participant)
-                .WithMany()
+                .WithMany(p => p.ParticipantScores) // Add navigation property in Participant if missing
                 .HasForeignKey(ps => ps.ParticipantId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-        
+            // Roles and Participants
+            modelBuilder.Entity<Roles>()
+                .ToTable("Roles")
+                .HasMany(r => r.Participants)
+                .WithOne(p => p.Roles)
+                .HasForeignKey(p => p.RoleID);
+
+
         }
     }
 }
