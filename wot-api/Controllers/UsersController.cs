@@ -20,7 +20,7 @@ namespace wot_api.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult RegisterUser([FromBody] Users user)
+        public IActionResult RegisterUser([FromBody] User user)
         {
             try
             {
@@ -54,7 +54,8 @@ namespace wot_api.Controllers
 
                 user.Password = passwordEncryption.HashPassword;
                 user.Salt = passwordEncryption.Salt;
-
+                user.UserTypeId = UserType.FreeUser;
+        
                 _context.Users.Add(user);
                 _context.SaveChanges();
 
@@ -67,7 +68,7 @@ namespace wot_api.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult LoginUser([FromBody] Users user)
+        public IActionResult LoginUser([FromBody] User user)
         {
             try
             {
@@ -141,7 +142,7 @@ namespace wot_api.Controllers
             }
         }
 
-        private bool IsDupplicateUser(Users user, out string errorDupplicateUser)
+        private bool IsDupplicateUser(User user, out string errorDupplicateUser)
         {
             var userEmail = _context.Users.FirstOrDefault(u => u.Email == user.Email);
 

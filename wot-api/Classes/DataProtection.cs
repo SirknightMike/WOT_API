@@ -13,7 +13,7 @@ namespace wot_api.Classes
         private const int KeySize = 32;
         private const int Iterations = 10000;
 
-        public PasswordEncryptionDTO HashPassword(Users user)
+        public PasswordEncryptionDTO HashPassword(User user)
         {
             using (var rng = new RNGCryptoServiceProvider())
             {

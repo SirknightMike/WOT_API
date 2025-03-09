@@ -20,7 +20,7 @@ namespace wot_api.Entities
         public string Email { get; set; }
         public DateTime JoinedDate { get; set; } // Date the participant joined the competition
 
-        public virtual Users Users { get; set; }
+        public virtual User Users { get; set; }
         public virtual Roles Roles { get; set; }
         public virtual Competition Competition { get; set; }
         public virtual ICollection<ParticipantScore> ParticipantScores { get; set; }

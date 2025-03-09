@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace wot_api.Data.Migrations
+namespace wot_api.Migrations
 {
     /// <inheritdoc />
-    public partial class MatchCompetitionParticipantstable : Migration
+    public partial class usertypeadded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,6 +31,37 @@ namespace wot_api.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Competitions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    RoleID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    RoleDescription = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.RoleID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Salt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    UserTypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,9 +93,13 @@ namespace wot_api.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserID = table.Column<int>(type: "int", nullable: false),
+                    RoleID = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompetitionId = table.Column<int>(type: "int", nullable: true),
+                    JoinedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UsersId = table.Column<int>(type: "int", nullable: false),
+                    CompetitionId = table.Column<int>(type: "int", nullable: false),
                     MatchId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -81,6 +116,18 @@ namespace wot_api.Data.Migrations
                         column: x => x.MatchId,
                         principalTable: "Matches",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Participants_Roles_RoleID",
+                        column: x => x.RoleID,
+                        principalTable: "Roles",
+                        principalColumn: "RoleID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Participants_Users_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -125,6 +172,16 @@ namespace wot_api.Data.Migrations
                 column: "MatchId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Participants_RoleID",
+                table: "Participants",
+                column: "RoleID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Participants_UsersId",
+                table: "Participants",
+                column: "UsersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ParticipantsScore_MatchId",
                 table: "ParticipantsScore",
                 column: "MatchId");
@@ -133,6 +190,13 @@ namespace wot_api.Data.Migrations
                 name: "IX_ParticipantsScore_ParticipantId",
                 table: "ParticipantsScore",
                 column: "ParticipantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
         }
 
         /// <inheritdoc />
@@ -146,6 +210,12 @@ namespace wot_api.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Matches");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Competitions");

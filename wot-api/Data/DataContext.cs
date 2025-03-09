@@ -9,7 +9,7 @@ namespace wot_api.Data
     {
         public DataContext(DbContextOptions options): base(options) { }
 
-        public DbSet<Users> Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Competition> Competitions { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<Participant> Participants { get; set; }
@@ -19,7 +19,7 @@ namespace wot_api.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Users
-            modelBuilder.Entity<Users>()
+            modelBuilder.Entity<User>()
                 .HasIndex(p => p.Email)
                 .IsUnique(true);
 
