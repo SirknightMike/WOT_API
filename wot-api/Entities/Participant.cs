@@ -11,7 +11,6 @@ namespace wot_api.Entities
         public int Id { get; set; }
         [Required]
         public int UserID { get; set; } // Foreign key for User
-
         [Required]
         public int RoleID { get; set; } // Foreign key for Role
         [Required]
@@ -19,12 +18,10 @@ namespace wot_api.Entities
         [Required]
         public string Email { get; set; }
         public DateTime JoinedDate { get; set; } // Date the participant joined the competition
-
         public virtual User Users { get; set; }
         public virtual Roles Roles { get; set; }
         public virtual Competition Competition { get; set; }
         public virtual ICollection<ParticipantScore> ParticipantScores { get; set; }
-
 
     }
 }

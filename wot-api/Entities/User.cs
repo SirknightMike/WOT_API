@@ -18,6 +18,6 @@ namespace wot_api.Entities
     public enum UserType
     {
         FreeUser,
-        PreniumUser,
+        PremiumUser,
     }
 }
