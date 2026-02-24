@@ -1,11 +1,12 @@
-﻿namespace wot_api.Entities
+using wot_api.Entities;
+
+namespace wot_api.DTO
 {
-    public class Users
+    public class RegisterUserResponseDTO
     {
         public int Id { get; set; }
         public string? Username { get; set; }
         public string? Email { get; set; }
-        public string? Password { get; set; }
-        public byte[]? Salt { get; set; }
+        public UserType? UserTypeId { get; set; }
     }
 }

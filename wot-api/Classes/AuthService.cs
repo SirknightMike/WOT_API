@@ -38,7 +38,7 @@ namespace wot_api.Classes
             return tokenHandler.WriteToken(token);
         }
 
-        public ClaimsPrincipal ValidateJ3wtToken(string token)
+        public ClaimsPrincipal ValidateJwtToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_secretKey);
